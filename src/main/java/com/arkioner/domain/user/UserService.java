@@ -7,7 +7,6 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 import java.util.UUID;
 
-@Service
 public class UserService {
 
     private final UserRepository repository;

@@ -33,7 +33,7 @@ public class AuthController {
     public Mono<ResponseEntity<AuthResponse>> login(@RequestBody LoginRequest req) {
         return userService.authenticate(req.username(), req.password())
                 .map(user -> {
-                    String token = jwtUtils.generateToken(user.username(), user.roles());
+                    String token = jwtUtils.generateToken(user.id(), user.username(), user.roles());
                     return ResponseEntity.ok(new AuthResponse(token, user.username(), user.avatarUrl()));
                 })
                 .switchIfEmpty(Mono.just(ResponseEntity.status(401).build()));

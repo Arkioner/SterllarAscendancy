@@ -1,0 +1,14 @@
+GET http://localhost:8080/api/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJiNWIwOTM4Ny00ZjQ1LTRlZWMtOThiZC1kYzFiYjFjZjljMzkiLCJzdWIiOiJhbGljZSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzU3MjcxMzE0LCJleHAiOjE3NTczNTc3MTR9.2aPHtyqAESyqZ1ECLUNvcOkQJ_k3aU0iUX_kUGuCG28
+
+###
+
+PUT http://localhost:8080/api/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJiNWIwOTM4Ny00ZjQ1LTRlZWMtOThiZC1kYzFiYjFjZjljMzkiLCJzdWIiOiJhbGljZSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzU3MjcxMzE0LCJleHAiOjE3NTczNTc3MTR9.2aPHtyqAESyqZ1ECLUNvcOkQJ_k3aU0iUX_kUGuCG28
+Content-Type: application/json
+
+{
+  "avatarUrl": "https://example.com/avatar.png",
+  "displayName": "Arkioner",
+  "bio": "Unity dev exploring the galaxy 🚀"
+}

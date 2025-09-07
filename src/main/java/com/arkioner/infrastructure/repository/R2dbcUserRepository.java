@@ -13,15 +13,15 @@ import java.util.UUID;
 
 @Repository
 public class R2dbcUserRepository implements UserRepository {
-    private final DatabaseClient db;
+    private final DatabaseClient dbc;
 
-    public R2dbcUserRepository(DatabaseClient db) {
-        this.db = db;
+    public R2dbcUserRepository(DatabaseClient dbc) {
+        this.dbc = dbc;
     }
 
     @Override
     public Mono<User> findByUsername(String username) {
-        return db.sql("SELECT id, username, password_hash, avatar_url, roles FROM app_user WHERE username = :username")
+        return dbc.sql("SELECT id, username, password_hash, avatar_url, roles FROM app_user WHERE username = :username")
                 .bind("username", username)
                 .map(this::toUser)
                 .one();
@@ -29,7 +29,7 @@ public class R2dbcUserRepository implements UserRepository {
 
     @Override
     public Mono<User> findById(UUID id) {
-        return db.sql("SELECT id, username, password_hash, avatar_url, roles FROM app_user WHERE id = :id")
+        return dbc.sql("SELECT id, username, password_hash, avatar_url, roles FROM app_user WHERE id = :id")
                 .bind("id", id)
                 .map(this::toUser)
                 .one();
@@ -39,7 +39,7 @@ public class R2dbcUserRepository implements UserRepository {
     public Mono<User> save(User user) {
         String sql = "INSERT INTO app_user (id, username, password_hash, avatar_url, roles) VALUES (:id, :username, :password_hash, :avatar_url, :roles) " +
                 "ON CONFLICT (username) DO UPDATE SET password_hash = EXCLUDED.password_hash, avatar_url = EXCLUDED.avatar_url, roles = EXCLUDED.roles RETURNING id, username, password_hash, avatar_url, roles";
-        return db.sql(sql)
+        return dbc.sql(sql)
                 .bind("id", user.id())
                 .bind("username", user.username())
                 .bind("password_hash", user.passwordHash())

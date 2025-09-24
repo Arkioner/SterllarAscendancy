@@ -1,7 +1,5 @@
 package com.arkioner.infrastructure.web;
 
-import com.arkioner.domain.user.UserProfile;
-import com.arkioner.domain.user.UserProfileService;
 import com.arkioner.infrastructure.security.SecurityConfig;
 import com.arkioner.infrastructure.web.dto.UserProfileUpdateRequest;
 import org.springframework.http.HttpStatus;
@@ -14,7 +12,7 @@ import java.util.function.Function;
 @RestController
 @RequestMapping("/api/profile")
 public class UserProfileController {
-    private final UserProfileService userProfileService;
+    /*private final UserProfileService userProfileService;
 
     public UserProfileController(UserProfileService userProfileService) {
         this.userProfileService = userProfileService;
@@ -41,8 +39,7 @@ public class UserProfileController {
                 new UserProfile(
                         auth.getUserId(),
                         request.avatarUrl(),
-                        request.displayName(),
-                        request.bio()
+                        request.displayName()
                 );
-    }
+    }*/
 }

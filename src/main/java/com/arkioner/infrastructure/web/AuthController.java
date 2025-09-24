@@ -1,11 +1,14 @@
 package com.arkioner.infrastructure.web;
 
 
-import com.arkioner.domain.user.UserService;
+import com.arkioner.domain.loginuser.LoginUser;
+import com.arkioner.domain.loginuser.LoginUserService;
+import com.arkioner.domain.loginuser.UsernameAlreadyInUseException;
 import com.arkioner.infrastructure.security.JwtUtils;
 import com.arkioner.infrastructure.web.dto.AuthResponse;
 import com.arkioner.infrastructure.web.dto.LoginRequest;
 import com.arkioner.infrastructure.web.dto.RegisterRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
@@ -14,28 +17,36 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    private final UserService userService;
+    private final LoginUserService loginUserService;
     private final JwtUtils jwtUtils;
 
-    public AuthController(UserService userService, JwtUtils jwtUtils) {
-        this.userService = userService;
+    public AuthController(LoginUserService loginUserService, JwtUtils jwtUtils) {
+        this.loginUserService = loginUserService;
         this.jwtUtils = jwtUtils;
     }
 
     @PostMapping("/register")
-    public Mono<ResponseEntity<String>> register(@RequestBody RegisterRequest req){
-        return userService.register(req.username(), req.password(), req.avatarUrl())
-                .map(u -> ResponseEntity.ok().body("OK"))
-                .onErrorResume(ex -> Mono.just(ResponseEntity.badRequest().body(ex.getMessage())));
+    public Mono<ResponseEntity<AuthResponse>> register(@RequestBody RegisterRequest req){
+        return loginUserService.register(req.username(), req.password())
+                .map(this::buildAuthResponse)
+                .map(authResponse -> ResponseEntity.status(HttpStatus.CREATED).body(authResponse));
     }
 
     @PostMapping("/login")
     public Mono<ResponseEntity<AuthResponse>> login(@RequestBody LoginRequest req) {
-        return userService.authenticate(req.username(), req.password())
-                .map(user -> {
-                    String token = jwtUtils.generateToken(user.id(), user.username(), user.roles());
-                    return ResponseEntity.ok(new AuthResponse(token, user.username(), user.avatarUrl()));
-                })
-                .switchIfEmpty(Mono.just(ResponseEntity.status(401).build()));
+        return loginUserService.authenticate(req.username(), req.password())
+                .map(this::buildAuthResponse)
+                .map(ResponseEntity::ok);
     }
+
+    private AuthResponse buildAuthResponse(LoginUser loginUser) {
+        String token = jwtUtils.generateToken(loginUser);
+        return new AuthResponse(token);
+    }
+
+    @ExceptionHandler
+    public Mono<ResponseEntity<String>> handleException(UsernameAlreadyInUseException ex) {
+        return Mono.just(ResponseEntity.unprocessableEntity().body(ex.getMessage()));
+    }
+
 }

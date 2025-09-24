@@ -1,12 +1,14 @@
 package com.arkioner.infrastructure.security;
 
-import io.jsonwebtoken.*;
+import com.arkioner.domain.loginuser.LoginUser;
+import com.arkioner.domain.loginuser.LoginUserId;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -21,21 +23,16 @@ public class JwtUtils {
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    public String generateToken(UUID userId, String username, List<String> roles) {
+    public String generateToken(LoginUser loginUser) {
         Date now = new Date();
         Date exp = new Date(now.getTime() + expirationMs);
         return Jwts.builder()
-                .setId(userId.toString())
-                .setSubject(username)
-                .claim("roles", roles)
+                .setId(loginUser.id().value().toString())
+                .setSubject(loginUser.username())
                 .setIssuedAt(now)
                 .setExpiration(exp)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
-    }
-
-    public Jws<Claims> parse(String token) {
-        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
     }
 }
 

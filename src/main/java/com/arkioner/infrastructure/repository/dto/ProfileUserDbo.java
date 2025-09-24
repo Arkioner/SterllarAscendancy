@@ -5,23 +5,21 @@ import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.UUID;
 
-@Table("user_profile")
-public class UserProfileDbo {
+@Table("profile_user")
+public class ProfileUserDbo {
     @Id
-    private UUID userId;
+    private UUID loginUserId;
     private String avatarUrl;
     private String displayName;
-    private String bio;
 
-    public UserProfileDbo(UUID userId, String avatarUrl, String displayName, String bio) {
-        this.userId = userId;
+    public ProfileUserDbo(UUID loginUserId, String avatarUrl, String displayName) {
+        this.loginUserId = loginUserId;
         this.avatarUrl = avatarUrl;
         this.displayName = displayName;
-        this.bio = bio;
     }
 
-    public UUID getUserId() {
-        return userId;
+    public UUID getLoginUserId() {
+        return loginUserId;
     }
 
     public String getAvatarUrl() {
@@ -30,10 +28,6 @@ public class UserProfileDbo {
 
     public String getDisplayName() {
         return displayName;
-    }
-
-    public String getBio() {
-        return bio;
     }
 }
 

@@ -9,6 +9,5 @@ Content-Type: application/json
 
 {
   "avatarUrl": "https://example.com/avatar.png",
-  "displayName": "Arkioner",
-  "bio": "Unity dev exploring the galaxy 🚀"
+  "displayName": "Arkioner"
 }

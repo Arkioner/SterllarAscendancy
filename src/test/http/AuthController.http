@@ -5,7 +5,8 @@ Content-Type: application/json
 {
   "username": "alice",
   "password": "s3cr3t",
-  "avatarUrl": "https://example.com/ava/alice.png"
+  "displayName": "Alicia_M",
+  "avatarUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRK5OiMl4GWLXVP-rP0vOqbR1ZDRCB8dwadBA&s"
 }
 
 ###
@@ -25,6 +26,6 @@ Content-Type: application/json
 #{
 #  "token":"<jwt-token>",
 #  "username":"alice",
-#  "avatarUrl":"https://example.com/ava/alice.png"
+#  "avatarUrl":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRK5OiMl4GWLXVP-rP0vOqbR1ZDRCB8dwadBA&s"
 #}
 ###

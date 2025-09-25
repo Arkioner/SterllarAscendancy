@@ -8,14 +8,16 @@ services:
     ports:
       - "5432:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      test: sh -c "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"
       interval: 5s
       retries: 10
     volumes:
       - db_data:/var/lib/postgresql/data
 
+
   app:
-    build: .
+    build:
+      context: .
     depends_on:
       db:
         condition: service_healthy
@@ -24,7 +26,7 @@ services:
       JDBC_URL: jdbc:postgresql://db:5432/game
       DB_USER: game
       DB_PASSWORD: secret
-      JWT_SECRET: very-secret-change-me
+      JWT_SECRET: ea09b8f6-fc04-445e-826a-0f9395821ea1
     ports:
       - "8080:8080"
 
